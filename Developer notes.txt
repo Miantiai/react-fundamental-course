@@ -1,0 +1,257 @@
+Every component to have state and to tell React what there's been a change we use hook useState
+
+UseState - this is array wich two meanings:
+    first meaning: set value
+    second meaning: state changing function
+
+------------------CODE------------------
+
+import React, { useState } from 'react';
+
+function App() {
+  const [likes, setLikes] = useState(0); //useState hook
+
+  // a function that increments the "likes" variable by 1
+  function increment() {
+    setLikes(likes + 1);
+  }
+
+  // a function that decrements the "likes" variable by 1
+  function decrement() {
+    setLikes(likes - 1);
+  }
+
+  return (
+    <div className="App">
+      <h1>{likes}</h1>
+      <button onClick={increment}>Increment</button> {/* button that increases the number by 1 */}
+      <button onClick={decrement}>Decrement</button> {/* button that decrease the number by 1 */}
+    </div>
+  );
+}
+
+export default App;
+
+------------------/CODE------------------
+
+
+Managed component is component whose value we can change by changing its state.
+
+OnChange 
+
+------------------CODE------------------
+
+import React, { useState } from 'react';
+function App() { 
+  const [likes, setLikes] = useState(0); //useState hook
+  const [value, setValue] = useState('TEXT in input')
+
+  // a function that increments the "likes" variable by 1
+  function increment() {
+    setLikes(likes + 1);
+  }
+
+  // a function that decrements the "likes" variable by 1
+  function decrement() {
+    setLikes(likes - 1);
+  }
+  
+  G8e3a4I42j
+  cef88hec
+  console.log(value);
+
+
+  return (
+    <div className="App">
+      <h1>{likes}</h1>
+      <h1>{value}</h1>
+      <input 
+        type="text" value={likes} 
+        onChange={event => setValue(event.target.value)}
+      
+      />
+      <button onClick={increment}>Increment</button> {/* button that increases the number by 1 */}
+      <button onClick={decrement}>Decrement</button> {/* button that decrease the number by 1 */}
+    </div>
+  );
+}
+
+export default App;
+------------------/CODE------------------
+
+//Function counter
+------------------CODE-------------------
+import React, { useState } from 'react'
+
+export default function App() {
+  const [count, setCount] = useState(0)
+
+  function inc() {
+    setCount(count + 1)
+  }
+  
+  console.log(count);
+  return (
+    <div>
+      <h2>{count}</h2>
+      <button onClick={inc}>+</button>
+      <button onClick={() => setCount(count - 1)}>-</button>
+    </div>
+  )
+}
+------------------/CODE-------------------
+
+Callback - is function transferred in other function as an arqument
+
+
+// Class counter
+------------------CODE-------------------
+import React, { Component } from 'react'
+
+export default class ClassFlugger extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      count: 0
+    }
+  }
+
+  render() {
+    return (
+      <div>
+        <h2>{this.state.count}</h2>
+        <button onClick={() => this.setState({count: this.state.count + 1}) }>+</button>
+        <button onClick={() => this.setState({count: this.state.count - 1}) }>-</button>
+      </div>
+    )
+  }
+}
+------------------/CODE-------------------
+
+
+Props - это обьект в который я могу заворачивать аргументы и передовать его в компоненты это позвляет мне их переиспользовать и коректировать изменяемые значения такие как заголовок поста под конкретный случай или например добавить два поста в файле App.js и каждому указать уникальное название и контент используя аргументы
+------------------CODE-------------------
+// App.js 
+import React from 'react'
+import ClassFlugger from './components/ClassFlugger'
+import Flugger from './components/Flugger'
+import Post from './components/Post'
+import './styles/App.css'
+
+export default function App() {
+  return (
+    <div className='App'>
+      <Post post={{id: 1, title: 'Golang', body: 'Description'}}/>
+    </div>
+  )
+}    
+  
+
+
+// PostItems.jsx
+import React from 'react'
+import '../styles/App.css'
+
+
+export default function Post(props) {
+  console.log(props)
+  return (
+    <div className='Post'>
+      <div className='Post__content'>
+          <strong>{props.post.id}, {props.post.title}</strong>
+          <div>
+            {props.post.body}
+          </div>
+          <div className='Post__buttons'>
+            <button>Post</button>
+            <button>Delete</button>
+          </div>
+        </div>  
+    </div>
+  )
+}
+
+------------------/CODE-------------------
+
+
+Преобразование масива с элементами в массив с React компонентами
+------------------CODE-------------------
+// App.js
+import React, { useState } from 'react';
+
+import ClassFlugger from './components/ClassFlugger'
+import Flugger from './components/Flugger'
+import PostItems from './components/PostItems'
+import './styles/App.css'
+
+export default function App() {
+    const [posts, setPosts] = useState([
+      {id: 0, title: 'Golang it', description: 'Description'},  //element
+      {id: 1, title: 'Golang it1', description: 'Description'}, //element
+      {id: 2, title: 'Golang it2', description: 'Description'}  //element
+    ]);
+
+
+    return (
+    <div className='App'>
+      <h1 style={{textAlign: 'center'}}>Posts List</h1>
+      {posts.map(post => 
+        <PostItems post={post} key={post.id} />
+      )}
+    </div>
+  )
+}
+
+// PostItems.jsx
+import React, { useState } from 'react';
+
+export default function PostItems(props) {
+  return (
+    <div>
+      <div className="PostItems">
+        <div className="PostItems__content">
+          <header>{props.post.id}. {props.post.title}</header>
+          <div className="PostItems__description">{props.post.description}</div>
+          <div className="PostItems__buttons">
+            <button>Create</button>
+            <button>Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+------------------/CODE-------------------    
+
+Standart css styles for button
+------------------CODE-------------------
+//App.css
+button {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  outline: none;
+  border: 0;
+  vertical-align: middle;
+  text-decoration: none;
+  font-size: inherit;
+  font-family: inherit;
+}
+------------------/CODE-------------------
+
+How make UI component?
+Don't never use margin and positioning styles inside a component
+If I want to use a margin styles for component I just add this component in Block and to that block margin styles
+Do the same with the width for the component
+If component to use buiznes logic don't use state inside a component  
+Don't pass function in props inside a component
+Use PropTipes
+
+70% information we remember when participate in discussions
+90% information we remember when to worked and imitate a real work
+info@ingrad.com 
+rabota@ingrad.com - РАБОТА 
+
+
+https://webgolovolomki.com/kak-sdelat-effekt-nazhatiya-knopki-na-css/ гайд по анимации кнопок
