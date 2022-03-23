@@ -20,12 +20,14 @@ export default function App() {
       id: 2, title: 'title', description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum dicta distinctio beatae itaque nisi vel iste adipisci laborum et, ullam aliquam at eveniet nesciunt quo quis eum quibusdam praesentium sit nobis hic quam. Ea quas, aperiam vel voluptates voluptatibus commodi cumque ratione id cupiditate pariatur nesciunt deleniti veritatis impedit! Nostrum officiis ut aspernatur ex error expedita officia rem blanditiis voluptatibus. Quae, aut tenetur suscipit cum ratione expedita maxime molestias quis! Architecto odit ea consectetur pariatur quidem molestias aut debitis laudantium, magni quibusdam veritatis voluptas iusto error itaque, optio totam culpa animi velit blanditiis sunt cupiditate commodi ab ipsa! Ipsa, consectetur.'
     },
   ]);
-  
+
   return (
+    // Here I created form for adding posts stylized it using css modules
     <div className='App'>
       <form className='FormAddPosts'>
-        <FormInput placeholder='Post name'></FormInput>
-        <FormInput placeholder='Post desription '></FormInput>
+        {/* FormInput and FormButton it's UI component what I created */}
+        <FormInput placeholder='Post name'/>
+        <FormInput placeholder='Post desription'/>
         <div><FormButton disabled>Add post</FormButton></div>
       </form>
       <PostList posts={posts} title='Post List'/>
