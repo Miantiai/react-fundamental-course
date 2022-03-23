@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import style from './style.css'
+import React from 'react';
+import'./PostItem.css';
 
-export default function PostItem(props) {
+export default function PostItem(props, module) {
   return (
     <div>
       <div className="PostItem">

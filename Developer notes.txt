@@ -255,3 +255,48 @@ rabota@ingrad.com - РАБОТА
 
 
 https://webgolovolomki.com/kak-sdelat-effekt-nazhatiya-knopki-na-css/ гайд по анимации кнопок
+
+I can write down props intresting method:
+Insofar as props this object I can not write 'props' in arquments my component, but I can write down '{}' and write down inside these brackets name needing me parameter
+
+EXAMPLE:
+instead of this:
+------------------CODE--------------------
+//PostList.jsx 
+import React from 'react';
+import PostItem from '../PostItem/PostItem'
+
+export default function PostList(props) {
+  console.log(props);
+  return (
+    <div>
+      <h1 style={{textAlign: 'center'}}>
+        {props.title}
+      </h1>
+      {props.posts.map((post) => 
+        <PostItem post={post} key={props.id} />
+      )}
+    </div>
+  )
+}
+------------------/CODE-------------------
+it:
+------------------CODE--------------------
+//PostList.jsx 
+import React from 'react';
+import PostItem from '../PostItem/PostItem'
+// {posts, title, id}
+export default function PostList({posts, title, id}) {
+  console.log(props);
+  return (
+    <div>
+      <h1 style={{textAlign: 'center'}}>
+        {title}
+      </h1>
+      {posts.map((post) => 
+        <PostItem post={post} key={id} />
+      )}
+    </div>
+  )
+}
+------------------/CODE-------------------
