@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import PostList from './components/PostList/PostList';
 import './styles/App.css'
+import FormButton from './components/UI components/FormButton/FormButton';
+import FormInput from './components/UI components/FormInput/FormInput';
+
+
 
 export default function App() { 
   const [posts, setPosts] = useState([
@@ -19,10 +23,10 @@ export default function App() {
   
   return (
     <div className='App'>
-      <form>
-        <input type='text' placeholder='Post name'></input>
-        <input type='text' placeholder='Post desription '></input>
-        <button>Add post</button>
+      <form className='FormAddPosts'>
+        <FormInput placeholder='Post name'></FormInput>
+        <FormInput placeholder='Post desription '></FormInput>
+        <div><FormButton disabled>Add post</FormButton></div>
       </form>
       <PostList posts={posts} title='Post List'/>
     </div>

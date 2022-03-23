@@ -1,7 +1,7 @@
 import React from 'react';
-import'./PostItem.css';
+import './style.css';
 
-export default function PostItem(props, module) {
+export default function PostItem(props) {
   return (
     <div>
       <div className="PostItem">

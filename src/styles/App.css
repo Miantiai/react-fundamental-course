@@ -18,3 +18,8 @@ html {
     width: 800px;
 }
 
+.FormAddPosts {
+    display: flex;
+    flex-direction: column;
+    
+}
