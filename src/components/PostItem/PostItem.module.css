@@ -1,0 +1,19 @@
+.contentDescription {
+    width: 100%;
+}
+
+
+.header {
+    margin-bottom: 10px;    
+}
+
+.content {
+    word-wrap: break-word;
+    width: 100%;    
+    /* overflow: hidden; */
+}
+
+/* general classes */
+.postItem {
+    
+}

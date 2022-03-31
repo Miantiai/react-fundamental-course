@@ -56,8 +56,7 @@ function App() {
     setLikes(likes - 1);
   }
   
-  G8e3a4I42j
-  cef88hec
+ 
   console.log(value);
 
 

@@ -1,15 +1,20 @@
 import React from 'react';
 import PostItem from '../PostItem/PostItem'
-// {posts, title, id}
-export default function PostList({posts, title, id}) {
-  // console.log();
+
+
+export default function PostList(props) {
+ 
   return (
     <div>
       <h1 style={{textAlign: 'center'}}>
-        {title}
+        {props.title}
       </h1>
-      {posts.map((post) => 
-        <PostItem post={post} key={id} />
+      {props.posts.map((post, index) => 
+        <PostItem
+          number={index + 1}
+          post={post} 
+          key={post.id}
+        />
       )}
     </div>
   )

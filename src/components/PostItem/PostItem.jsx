@@ -1,22 +1,21 @@
 import React from 'react';
 import './style.css';
+import s from './PostItem.module.css'
 
-export default function PostItem(props) {
+export default function PostItem({post, number}) {
   return (
-    <div>
-      <div className="PostItem">
+      <div className={s.postItem}>
       
-        <div className="PostItem__content">
-          <header>{props.post.id}. {props.post.title}</header>
-          <div>{props.post.description}</div>
+        <div className={s.content}>
+          <header className={s.header}>{number}. {post.title}</header>
+          <span className={s.contentDescription}>{post.description}</span>
         </div>
         
-        <div className="PostItem__buttons">
-          <button className='PostItem__buttonLike'>Like</button> 
-          <button className='PostItem__buttonDislike'>Dislike</button>
+        <div className={s.buttons}>
+          <button className={s.buttonLike}>Like</button> 
+          <button className={s.buttonDislike}>Dislike</button>
         </div>
 
       </div>
-    </div>
   )
 }
