@@ -1,33 +1,8 @@
-.contentDescription {
-    width: 100%;
-}
-
-
-.header {
-    margin-bottom: 10px;    
-}
-
-.content {
-    word-wrap: break-word;
-    width: 100%;    
-    /* overflow: hidden; */
-}
-
-/* general styles */
-.postItem {
-    
-}
-
-.button {
-    font-weight: 600;
-    color: #fff;
-    padding: 0.25em 0.2em;
-    background: #181A1B;
-    border: 2px solid #b18597;
-    border-radius: 0.75em;
-    transition: transform 0.15s;
-    transform-style: preserve-3d;  
-    margin: 0 2px;
-    width: 57.5px;
-    justify-content: center;
+.post {
+  display: flex;
+  border: 2px solid teal;
+  margin-top: 15px;
+  padding: 15px;
+  justify-content: space-between;
+  align-items: center;
 }

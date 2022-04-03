@@ -298,4 +298,65 @@ export default function PostList({posts, title, id}) {
     </div>
   )
 }
+------------------/CODE-------------------  
+
+I can to reset styles just importing normalize styles file
+------------------CODE--------------------
+@import-normalize;
 ------------------/CODE-------------------
+
+
+Хуки можно вкладывать только в верхний уровень вложенности, то есть их нельзя вкладывать в функции и т.д.
+
+
+Как отрисовать несколько компонентов на основании массива?
+Создаю useState в него помещаю массив, а в этот массив сколько мне нужно обьектов даю этим обьектам поля со свойствами в данном случае это title: со заначением 'title', body: со значением 'decription' далее вызываю в коде JSX переменную useState-а обращаюсь через точку к функции map и передаю аргументом функцию (callback), которая принимает аргкментом обьект который map создаст, его можно назвать как угодно далее в круглых скобках укажи JSX который ты хочешь отрисовать вместо обьекта в массиве
+-------------------CODE-------------------
+//App.js
+import { useState } from 'react';
+import PostItem from './components/PostItem/PostItem';
+import './styles/App.css';
+
+function App() {
+  const [posts, setPosts] = useState([
+    { id: 1, title: 'JavaScrpt', body: 'description' },
+    { id: 2, title: 'JavaScrpt 2', body: 'description' },
+    { id: 3, title: 'JavaScrpt 3', body: 'description' },
+  ]);
+
+  return (
+    <div className="App">
+      <h1 style={{ textAlin: 'center' }}>Post list</h1>
+      {posts.map((post) => (
+        <PostItem post={post} key={post.id} />
+      ))}
+    </div>
+  );
+}
+
+export default App;
+
+//PostItem.jsx
+import React from 'react';
+
+export default function PostItem(props) {
+  return (
+    <div className="post">
+      <div className="post__content">
+        <strong>
+          {props.post.id}. {props.post.title}
+        </strong>
+        <div>{props.post.body}</div>
+      </div>
+      <div className="post__btns">
+        <button>Delete</button>
+      </div>
+    </div>
+  );
+}
+------------------/CODE-------------------
+В React при создании списка обязательно указывай свойство key для каждого элемента списка причем значение key обязательно делай уникальным и не используй index массива для этого
+
+
+Как сделать инпут управляемым?
+Создаю useState и в свойствах input прописываю value={/*переменная useState*/} далее пишу свойство onChange(e => /*функция useState*/(e.target.value))
