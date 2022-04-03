@@ -13,7 +13,21 @@
     /* overflow: hidden; */
 }
 
-/* general classes */
+/* general styles */
 .postItem {
     
+}
+
+.button {
+    font-weight: 600;
+    color: #fff;
+    padding: 0.25em 0.2em;
+    background: #181A1B;
+    border: 2px solid #b18597;
+    border-radius: 0.75em;
+    transition: transform 0.15s;
+    transform-style: preserve-3d;  
+    margin: 0 2px;
+    width: 57.5px;
+    justify-content: center;
 }
