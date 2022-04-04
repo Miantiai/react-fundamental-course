@@ -1,41 +1,22 @@
 import { useState } from 'react';
+import PostForm from './components/PostForm/PostForm';
 import PostList from './components/PostList/PostList';
-import Button from './components/UI components/Button/Button';
-import Input from './components/UI components/Input/Input';
 import './styles/index.css';
 
 function App() {
   const [posts, setPosts] = useState([
-    { id: 1, title: 'JavaScrpt', body: 'description' },
-    { id: 2, title: 'JavaScrpt 2', body: 'description' },
-    { id: 3, title: 'JavaScrpt 3', body: 'description' },
+    { id: 0, title: 'JavaScrpt', body: 'description' },
+    { id: 1, title: 'JavaScrpt 2', body: 'description' },
+    { id: 2, title: 'JavaScrpt 3', body: 'description' },
   ]);
 
-  const [title, setTitle] = useState('');
-  const [body, setBody] = useState('');
-
-  const addNewPost = (e) => {
-    e.preventDefault();
+  const createPost = (newPost) => {
+    setPosts([...posts, newPost]);
   };
+
   return (
     <div className="App">
-      <form>
-        <Input
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="Post name"
-        />
-        <Input
-          type="text"
-          value={body}
-          onChange={(e) => setBody(e.target.value)}
-          placeholder="Post description"
-        />
-        <Button onClick={addNewPost} disablded="true">
-          Create post
-        </Button>
-      </form>
+      <PostForm create={createPost} />
       <PostList posts={posts} title={'Post list'} />
     </div>
   );

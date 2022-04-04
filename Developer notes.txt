@@ -360,3 +360,6 @@ export default function PostItem(props) {
 
 Как сделать инпут управляемым?
 Создаю useState и в свойствах input прописываю value={/*переменная useState*/} далее пишу свойство onChange(e => /*функция useState*/(e.target.value))
+
+
+ALWAIS write import { useState } from 'react' instead of import useState from 'react'
