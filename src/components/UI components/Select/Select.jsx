@@ -1,17 +1,14 @@
 import React from 'react';
 
-export default function Select({ options, defaultValue, value, onChange={} }) {
+export default function Select({ options, defaultValue, onChange }) {
+  // console.log(value);
   return (
-    <select
-      value={value}
-      onChange={event => onChange(event.target.value)}
+    <select onChange={(e) => onChange(e.target.value)}>
+      <option disabled>{defaultValue}</option>
 
-    >
-      <option disabled value="">
-        {defaultValue}
-      </option>
       {options.map((option) => (
-        <option key={option.value} value={option.value}>
+        //how value I current value from object
+        <option value={option.value} key={option.value}>
           {option.name}
         </option>
       ))}
