@@ -12,7 +12,7 @@ export default function PostItem(props) {
         <div>{props.post.body}</div>
       </div>
       <div className="post__btns">
-        <Button>Delete</Button>
+        <Button onClick={() => props.remove(props.post)}>Delete</Button>
       </div>
     </div>
   );
