@@ -2,7 +2,7 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import PostItem from '../PostItem/PostItem';
 
 export default function PostList({ posts, title, remove }) {
-  if (posts.length == 0) {
+  if (!posts.length) {
     return <h2 style={{ textAlign: 'center' }}>Posts not found!</h2>;
   }
   return (
