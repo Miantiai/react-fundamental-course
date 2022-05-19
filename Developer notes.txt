@@ -440,3 +440,101 @@ export default PostForm;
 
 
 Я могу реализовать двухсторонее связывание нужного мне DOW элемента даже если я вынес его в отдельный коспонент для этого я просто передаю onChange пропсами, принимаю его в компоненте и работаю с ним так как будто он внутри этого тега
+
+Я добавил возможность переходить на отдельную страницу поста, кликнув на кнопку 'открыть', но пока там ничего не отрисовываеться, а я хочу отрисовать там заголовок с title поста на которой я кликнул.
+Раньше я это делал просто получая все посты в самом компоненте <SinglePage>, но в проекте из фундаментального курса по React я получаю все посты в компоненте <PostList>, передовать их оттуда в <SinglePage> будет слишком сложно.
+Поэтому я решил выцеплять из адресной строки браузера id поста на который я перешел и на его основании делать отдельный запрос на сервер для получения поста с тем же id, что и у того на который я перешел
+Выцеплять я его могу, используя хук useParams 
+
+В <SinglePostPage> создай литерал обьекта через константу и в этом литерале получи id, присвой этому всему вызов функции useParams.
+
+-------------------CODE-------------------
+import { useParams } from 'react-router-dom';
+
+export default function SinglePostPage() {
+  const { id } = useParams();
+
+  return (
+    <div>SinglePostPage</div>
+  );
+}
+------------------/CODE-------------------
+
+Для получения постов ранее создал отдельный API сервис <PostService> сейчас я снова им воспользуюсь
+Создай в файле <PostService> новую функцию getPostById сделай её такой же, что функция getAll, только без параметров запроса и к поисковой строке добавь id поста на который ты перешел и к самому пути в его конце добавь /, а также прими id в этой функции
+
+-------------------CODE-------------------
+//PostService.jsx
+import axios from 'axios';
+
+export default class PostService {
+  static async getAll(limit = 10, page = 1) {
+    const response = await axios.get(
+      'https://jsonplaceholder.typicode.com/posts',
+      {
+        params: {
+          _limit: limit,
+          _page: page,
+        },
+      }
+    );
+    return response;
+  }
+
+  static async getPostById(id) {
+    const response = await axios.get(
+      'https://jsonplaceholder.typicode.com/posts/' + id
+    );
+    return response;
+  }
+}
+------------------/CODE-------------------
+
+В компоненте <SinglePostPage> создай состояние post, через useState и помести в него пустой обьект.
+
+Там же используй свой кастомный хук useFetching, создай массив с элементами fetchPostById, isLoading и error, присвой ему вызов хука useFetching и в него параметром передай функцию callback, сделай её асинхронной, указав async перед её списком параметров. 
+В её же теле создай константу response и присвой ей вызов метода getPostById класса PostServiсe и в него передай id полученный через хук useParams, незабудь указать await перед PostService, а также в её теле измени состояние post на response.data
+
+Используй хук useEffect, в его теле вызови, полученную через хук useFetching функцию fetchPostById, незабудь импортировать его
+
+ВОТ И ВСЁ тот самый пост, который я открыл я получил теперь реализуй отрисовку его title и body, только с отрисовкой лоадера
+
+Для этого по схеме реализуй условную отрисовку на основании значения isLoading, полученного через хук useFetching, использовав тернарный опрератор ? - если isLoading true, то отрисовать компонент <Loader> если false, то отрисовать div с заголовком и телом поста
+
+-------------------CODE-------------------
+//SinglePostPage.jsx
+
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import PostService from '../../API/PostService';
+import Loader from '../../components/UI components/Loader/Loader';
+import useFetching from '../../hooks/useFetching';
+
+export default function SinglePostPage() {
+  const { id } = useParams();
+  const [post, setPost] = useState({});
+  const [fetchPostById, isLoading, error] = useFetching(async () => {
+    const response = await PostService.getPostById(id);
+    setPost(response.data);
+  });
+
+  useEffect(() => {
+    fetchPostById(id);
+  }, []);
+
+  return (
+    <div>
+      <h1>You openned post witch id: {post.id}</h1>
+
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <div>
+          <h2>{post.title}</h2>
+          <p>{post.body}</p>
+        </div>
+      )}
+    </div>
+  );
+}
+------------------/CODE-------------------
