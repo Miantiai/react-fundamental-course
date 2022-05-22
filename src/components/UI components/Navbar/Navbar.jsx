@@ -1,11 +1,18 @@
-import { Link } from 'react-router-dom';
+import CustomNavLink from "../CustomNavLink/CustomNavLink";
 
 export default function Navbar() {
   return (
     <div className="navbar">
       <div className="navbar__links">
-        <Link to="Posts">Posts</Link>
-        <Link to="About">About</Link>
+        <CustomNavLink className="NavLink" to="/">
+          Home
+        </CustomNavLink>
+        <CustomNavLink className="NavLink" to="Posts">
+          Posts
+        </CustomNavLink>
+        <CustomNavLink className="NavLink" to="About">
+          About
+        </CustomNavLink>
       </div>
     </div>
   );
