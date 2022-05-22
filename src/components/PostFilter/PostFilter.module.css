@@ -1,0 +1,9 @@
+.PostFilter {
+  display: flex;
+}
+
+.Select {
+  display: flex;
+  margin-left: 5px;
+  align-items: center;
+}

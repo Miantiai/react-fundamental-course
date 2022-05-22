@@ -21,13 +21,17 @@ html {
 h1 {
   text-align: center;
 }
+
 .App {
-  width: 50em;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 48em;
 }
 
 /* Post animation */
 .post-enter {
-  transform: translateX(-350px);
+  transform: translateX(-10000px);
 }
 .post-enter-active {
   transform: translateX(0);
@@ -37,19 +41,31 @@ h1 {
   opacity: 1;
 }
 .post-exit-active {
-  transform: translateX(-350px);
+  transform: translateX(10000px);
   transition: all 500ms ease-in;
 }
 
 .navbar {
   height: 50px;
-  width: 100vh;
+  width: 100%;
+  max-width: 48em;
   display: flex;
   align-items: center;
+  justify-content: center;
   padding: 0 15px;
   background-color: teal;
 }
 
 .navbar__links {
-  margin-left: auto;
+  display: flex;
+}
+
+.NavLink {
+  text-decoration: none;
+  color: azure;
+  margin: 0px 5px;
+}
+
+a {
+  color: white;
 }

@@ -1,0 +1,8 @@
+.comments {
+  display: flex;
+}
+
+.comment {
+  background-color: rgba(24, 24, 24, 0.5np);
+  margin-top: 0.4em;
+}

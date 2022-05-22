@@ -1,6 +1,7 @@
 .loader {
   width: 70px;
   height: 70px;
+  margin: auto;
   border: 3px dashed teal;
   border-radius: 50%;
   animation: rotate 0.7s infinite linear;

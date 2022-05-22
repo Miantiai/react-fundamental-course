@@ -54,7 +54,7 @@ function Posts() {
   }
 
   return (
-    <div className="App">
+    <div className="Posts">
       <Button style={{ marginTop: 10 }} onClick={() => setModal(true)}>
         Create post
       </Button>
@@ -63,7 +63,6 @@ function Posts() {
         <PostForm create={createPost} />
       </Modal>
 
-      <hr style={{ margin: '15px 0' }} />
       <PostFilter filter={filter} setFilter={setFilter} />
 
       {postError && <h2>Error: {postError}</h2>}
