@@ -1,11 +1,7 @@
 import React from 'react';
 import Input from '../UI components/Input/Input';
 import Select from '../UI components/Select/Select';
-<<<<<<< HEAD
-import s from './PostFilter.module.css';
-=======
 import s from './PostFilter.module.css'
->>>>>>> f357db09a30142a400d21635dd7ce780c9866292
 
 export default function PostFilter({ filter, setFilter }) {
   return (

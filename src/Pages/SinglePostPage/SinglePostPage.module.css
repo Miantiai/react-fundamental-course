@@ -1,7 +1,7 @@
-<<<<<<< HEAD
 .SinglePost {
   margin-top: 0.8em;
-=======
+}
+
 .comments {
   display: flex;
 }
@@ -9,5 +9,4 @@
 .comment {
   background-color: rgba(24, 24, 24, 0.5np);
   margin-top: 0.4em;
->>>>>>> f357db09a30142a400d21635dd7ce780c9866292
 }

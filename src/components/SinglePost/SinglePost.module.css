@@ -1,7 +1,5 @@
 .SinglePost {
-<<<<<<< Updated upstream
   margin-top: 20px;
-=======
   display: flex;
   flex-direction: column;
 }
@@ -12,5 +10,4 @@
 
 .body {
   margin: 0.5em 0em;
->>>>>>> Stashed changes
 }

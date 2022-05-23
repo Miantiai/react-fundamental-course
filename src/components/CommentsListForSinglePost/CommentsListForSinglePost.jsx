@@ -30,8 +30,8 @@ export default function CommentsListForSinglePost() {
         <>
           <h3 className={s.title}>Comments</h3>
           {comments.map((comment) => (
-            <div className={s.comment}>
-              <CommentForSinglePost comment={comment} key={comment.id} />
+            <div className={s.comment} key={comment.id}>
+              <CommentForSinglePost comment={comment} />
             </div>
           ))}
         </>

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import PostService from '../../API/PostService';
@@ -21,7 +20,6 @@ export default function SinglePost() {
   }, []);
 
   return (
-<<<<<<< Updated upstream
     <div className={s.SinglePost}>
       {postIsLoading ? (
         <Loader />
@@ -30,27 +28,7 @@ export default function SinglePost() {
           <h2>{post.title}</h2>
           <p>{post.body}</p>
         </>
-=======
-    <div>
-      {postIsLoading ? (
-        <Loader />
-      ) : (
-        <div className={s.SinglePost}>
-          <h2 className={s.title}>{post.title}</h2>
-          <div className={s.body}>{post.body}</div>
-        </div>
->>>>>>> Stashed changes
       )}
     </div>
   );
-=======
-import s from './SinglePost.module.css'
-
-export default function SinglePost() {
-  return (
-    <div>
-      
-    </div>
-  )
->>>>>>> f357db09a30142a400d21635dd7ce780c9866292
 }

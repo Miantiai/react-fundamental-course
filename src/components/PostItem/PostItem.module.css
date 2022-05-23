@@ -2,31 +2,22 @@
   display: flex;
   border: 2px solid teal;
   margin-top: 15px;
-<<<<<<< HEAD
   flex-direction: column;
   padding: 0 0.5em;
-=======
   align-items: flex-end;
   flex-direction: column;
->>>>>>> f357db09a30142a400d21635dd7ce780c9866292
 }
 
 .btns {
   display: flex;
   flex-wrap: wrap;
-<<<<<<< HEAD
   align-self: flex-end;
-=======
->>>>>>> f357db09a30142a400d21635dd7ce780c9866292
 }
 
 .Button {
   margin: 5px 5px 5px 0px;
-<<<<<<< HEAD
 }
 
 .title {
   margin-bottom: 0.5em;
-=======
->>>>>>> f357db09a30142a400d21635dd7ce780c9866292
 }
