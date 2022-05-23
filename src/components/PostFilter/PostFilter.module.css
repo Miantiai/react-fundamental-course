@@ -1,10 +1,17 @@
 .PostFilter {
   display: flex;
+<<<<<<< HEAD
   justify-content: space-between;
+=======
+>>>>>>> f357db09a30142a400d21635dd7ce780c9866292
 }
 
 .Select {
   display: flex;
   margin-left: 5px;
   align-items: center;
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> f357db09a30142a400d21635dd7ce780c9866292

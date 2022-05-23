@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import PostService from '../../API/PostService';
@@ -42,4 +43,14 @@ export default function SinglePost() {
       )}
     </div>
   );
+=======
+import s from './SinglePost.module.css'
+
+export default function SinglePost() {
+  return (
+    <div>
+      
+    </div>
+  )
+>>>>>>> f357db09a30142a400d21635dd7ce780c9866292
 }
