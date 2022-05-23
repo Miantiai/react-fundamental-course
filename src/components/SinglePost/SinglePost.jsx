@@ -20,6 +20,7 @@ export default function SinglePost() {
   }, []);
 
   return (
+<<<<<<< Updated upstream
     <div className={s.SinglePost}>
       {postIsLoading ? (
         <Loader />
@@ -28,6 +29,16 @@ export default function SinglePost() {
           <h2>{post.title}</h2>
           <p>{post.body}</p>
         </>
+=======
+    <div>
+      {postIsLoading ? (
+        <Loader />
+      ) : (
+        <div className={s.SinglePost}>
+          <h2 className={s.title}>{post.title}</h2>
+          <div className={s.body}>{post.body}</div>
+        </div>
+>>>>>>> Stashed changes
       )}
     </div>
   );
