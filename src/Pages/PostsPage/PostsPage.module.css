@@ -1,0 +1,16 @@
+.PostsPage {
+  display: flex;
+  flex-direction: column;
+}
+
+.Pagination {
+  margin: 1.9em 0 0;
+}
+
+.ButtonCreatePost {
+  margin-top: 5px;
+}
+
+.pageSelect {
+  margin: 0.5em 0;
+}

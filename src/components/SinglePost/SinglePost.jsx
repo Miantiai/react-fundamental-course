@@ -25,8 +25,8 @@ export default function SinglePost() {
         <Loader />
       ) : (
         <>
-          <h2>{post.title}</h2>
-          <p>{post.body}</p>
+          <h2 className={s.title}>{post.title}</h2>
+          <div>{post.body}</div>
         </>
       )}
     </div>

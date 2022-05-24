@@ -540,9 +540,751 @@ export default function SinglePostPage() {
 ------------------/CODE-------------------
 
 Пора отобразить список коментарием на странице детального отображения поста, хорошо, что jsonplaceholder предостовляет такой список по id коментария 
-<<<<<<< HEAD
+
+Я опять удалил, то что напрограммировал, этот gitExtensios опасная штука я случайно откатился до своего 
+последнего коммита, хотя я просто нажал edit commit 
+
+Я все восстановил, но мне лучше быть осторожным с gitExtensios и лучше изучить git, как только приступлю у коммерческому проекту то сразу же настрою git и разузнаю как его правильно и эффективно использовать
 
 
-Я опять удалил, то что напрограммировал, этот gitExtensios опасная штука я случайно откатился до своего последнего коммита, хотя я просто нажал edit commit 
-=======
->>>>>>> f357db09a30142a400d21635dd7ce780c9866292
+Сейчас я храню список роутов в компоненте <AppRouter>, пока их мало, но, что если я добавлю 40 или 50 новых роутов?
+Какие-то роуты будут доступны не авторизованным пользователям какие-то будут приватными, в общем неудобно хранить роуты так в компоненте.
+Поэтому я это дело оптимизирую
+
+Создай папку Router в папке src
+
+Создай в этой папке фаил index.js 
+
+Из этого файла экспортируй константу routes, проинициализируй её массивом 
+Именно в этом массиве будут содержаться роуты, выглядит они будут как обьекты со свойствами:
+path, element.
+В которых пропиши тоже, что и писал в <Route>-ах в компоненте <AppRouter>
+
+-------------------CODE-------------------
+//index.js
+import { Navigate } from 'react-router-dom';
+import AboutPage from '../Pages/AboutPage';
+import HomePage from '../Pages/HomePage/HomePage';
+import PostsPage from '../Pages/PostsPage/PostsPage';
+import  SinglePostPage from '../Pages/SinglePostPage/SinglePostPage';
+
+export const routes = [
+  { path: '/', element: <HomePage /> },
+  { path: '/About', element: <AboutPage /> },
+  { path: '/Posts', element: <PostsPage /> },
+  { path: '/Posts/:id', element: <SinglePostPage /> },
+  { path: '*', element: <Navigate to="/" replace /> },
+];
+
+------------------/CODE-------------------
+
+В компоненте <AppRouter> вместо всех этих <Route>-ов импортируй массив роутов и пройдись по нему функцией map так чтобы на каждый элемент в массиве отрисовывался <Route> в который просто подставь path и element в правильные места 
+
+-------------------CODE-------------------
+//AppRouter.jsx
+import { Navigate } from 'react-router-dom';
+import AboutPage from '../Pages/AboutPage';
+import HomePage from '../Pages/HomePage/HomePage';
+import PostsPage from '../Pages/PostsPage/PostsPage';
+import SinglePostPage from '../Pages/SinglePostPage/SinglePostPage';
+
+export const routes = [
+  { path: '/', element: <HomePage /> },
+  { path: '/About', element: <AboutPage /> },
+  { path: '/Posts', element: <PostsPage /> },
+  { path: '/Posts/:id', element: <SinglePostPage /> },
+  { path: '*', element: <Navigate to="/" replace /> },
+];
+------------------/CODE-------------------
+
+
+Самое время реализовать авторизацию пользователя в моем приложении, конечно я и ранее её делал, но я хочу реализовать все в точности как Максим и разобрать его подход, а для эксперементов я использую свое коммерческое приложение, которое я сделаю как только завершу этот фундаментальный курс
+
+
+Создай страницу регистрации пользователя <Login> в папке Pages, разверни компонент.
+Создай заголовок Login и форму с двумя <Input> для первый для имени второй для пароля с типом password соответственно, еще добавь кнопочку Login и при нажатии на эту кнопку пользователь будет входить в приложение
+
+-------------------CODE-------------------
+//LoginPage.jsx
+
+import Button from '../../components/UI components/Button/Button';
+import Input from '../../components/UI components/Input/Input';
+
+export default function LoginPage() {
+  return (
+    <div>
+      <h1>Login</h1>
+      <form action="">
+        <Input type="text" placeholder="Введите пароль" />
+        <Input type="text" placeholder="Введите пароль" />
+        <Button>Login</Button>
+      </form>
+    </div>
+  );
+}
+------------------/CODE-------------------
+
+
+Авторизация предпологает, что будут приватные роуты, самое время 
+Создай массив приватный роутов, а точнее в папке router в файле index.js переименуй массив routes на privateRoutes
+
+Создай массив публичных роутов с именем publicRoutes в файле index.js, в папке Routes, в этом массиве создай роут в виде объекта с path: '/login', element: <LoginPage />
+
+В компоненте AppRouter импортируй два этих массива и пройдись по каждому из них функцией map по отдельности так чтобы на каждый элемент этого массива отрисовывался route в который ты подставишь данные из из обьектов этого массива path и component в правильные места
+
+-------------------CODE-------------------
+//AppRoutes.jsx
+import { Route, Routes } from 'react-router-dom';
+import React from 'react';
+import { privateRoutes, publicRoutes } from '../../../router';
+
+export default function AppRouter() {
+  return (
+    <Routes>
+      {privateRoutes.map((route) => (
+        <Route path={route.path} element={route.element} key={route.path} />
+      ))}
+
+      {publicRoutes.map((route) => (
+        <Route path={route.path} element={route.element} key={route.path} />
+      ))}
+    </Routes>
+  );
+}
+
+------------------/CODE-------------------  
+
+Теперь правильно настрой так доступы чтобы неавторизованные пользователт не имели доступа к приватным роутам и каждый раз когда они пробуют на них перейдти их перебрасывает на страницу с приватными Route
+
+Ты можешь реализовать это достаточно просто достаточно хранить информацию о том зарегестрирован пользователь или нет 
+
+Создай в файле <AppRouter> константу isAuth и присвой ей значение true так ты создашь boolean флаг
+
+Теперь как ты уже понял в зависимости от значения этой переменной будут инициализироваться либо приватные роуты либо публичные роуты
+
+В файле <AppRouter> реализуй конструкцию перебора функией map массива с приватными постами в случае если константа isAuth ровна true и перебора массива с публичными роутами в случае если эта константа ровна false.
+Ты можешь воспользоваться тернарным оператором ?: 
+
+-------------------CODE-------------------  
+//AppRouter.jsx
+import { Route, Routes } from 'react-router-dom';
+import React from 'react';
+import { privateRoutes, publicRoutes } from '../../../router';
+
+export default function AppRouter() {
+  const isAuth = false;
+
+  return (
+    <div>
+      {isAuth ? (
+        <Routes>
+          {privateRoutes.map((route) => (
+            <Route path={route.path} element={route.element} key={route.path} />
+          ))}
+        </Routes>
+      ) : (
+        <Routes>
+          {publicRoutes.map((route) => (
+            <Route path={route.path} element={route.element} key={route.path} />
+          ))}
+        </Routes>
+      )}
+    </div>
+  );
+}
+------------------/CODE-------------------  
+
+
+Таким образов просто отрисовываються два разных списка роутов, а именно компонентов <Routes> в зависимости от того авторизован пользователь или нет - это просто гениально!
+
+Теперь настало время познакомиться с хуком useContext - простыми словами это некое глобальное хранилище в которое ты можешь поместить какие-то данные из любой части приложения и получить к ним доступ также из любой части приложения, избегая пошагового перекидывания пропсов до десятого уровня вложенности.
+
+В папке src создай папку context, а в ней создай фаил index.js, в этом файле создай экспортируемую функцию AuthContext и присвой ей вызов функции createContext, а в эту функцию передай null, но незабудь импортировать её из react
+
+------------------/CODE-------------------  
+//context/index.js
+import { createContext } from "react";
+
+export const AuthContext = createContext(null);
+------------------/CODE-------------------  
+
+В файле App.js заверни все компоненты возвращаемые компонентом в <AuthContext.Provider>, но не забудь его импортировать.
+
+Компоненту <AuthContext.Provider> пропиши пропс value это те самые глобальные данные, к которым я буду обращаться в случае желания их получить, в этот пропс помести литерал обьекта
+
+В компоненте <App> создай состояние isAuth задай ему значение false
+
+Это состояние передай в контекст, а именно в обьект внутри его пропса value если быть точным то в этом объекте внутри value укажи 2 свойства isAuth и setIsAuth
+
+-------------------CODE-------------------  
+//App.js  
+import AppRouter from './components/UI components/AppRouter/AppRouter';
+import Navbar from './components/UI components/Navbar/Navbar';
+import './styles/index.css';
+import { AuthContext } from './context/index';
+import { useState } from 'react';
+
+export default function App() {
+  const [isAuth, setIsAuth] = useState(false);
+
+  return (
+    <div className="App">
+      <AuthContext.Provider value={{ isAuth, setIsAuth }}>
+        <Navbar />
+        <AppRouter />
+      </AuthContext.Provider>
+    </div>
+  );
+}
+------------------/CODE-------------------  
+
+
+Теперь в файле <AppRouter> получи данные из контекста, а именно isAuth и setIsAuth, создав константу - литерал обьекта присвой этому всему вызов хука useContext, а в сам этот хук передай контекст тот самый, что ты создал недавно AuthContext, незабудь импортировать этот хук и контекст
+
+  const {isAuth, setIsAuth} = useContext(AuthContext)
+
+Теперь пора настроить изменение состояния isAuth при нажатии кнопки Login на странице регистрации
+
+В файле <LoginPage> повесь на форму onSubmit и помести в него ссылку на функцию login, её создай чуть выше и в ней вызови всеми любимый event.preventDefault(), только event незабудь импортировать 
+
+Теперь в файле <LoginPage> получи данные из контекста, а именно isAuth и setIsAuth, создав константу - литерал обьекта присвой этому всему вызов хука useContext, а в сам этот хук передай контекст тот самый, что ты создал недавно AuthContext, незабудь импортировать этот хук и контекст
+
+И теперь внутри функции login ты можешь изменить состояние isAuth на true 
+-------------------CODE-------------------  
+//LoginPage.jsx
+import { useContext } from 'react';
+import Button from '../../components/UI components/Button/Button';
+import Input from '../../components/UI components/Input/Input';
+import { AuthContext } from '../../context';
+
+export default function LoginPage() {
+  const { isAuth, setIsAuth } = useContext(AuthContext);
+  
+  function login(e) {
+    e.preventDefault();
+    setIsAuth(true)
+  }
+  return (
+    <div>
+      <h1>Login</h1>
+      <form onSubmit={login}>
+        <Input type="text" placeholder="Введите пароль" />
+        <Input type="text" placeholder="Введите пароль" />
+        <Button>Login</Button>
+      </form>
+    </div>
+  );
+}
+------------------/CODE-------------------  
+
+
+Кнопку войти ты реализовал теперь пора реализовать кнопку выйти её сделай в header-е как это обычно делают.
+
+В файле <Navbar> чуть выше блока с ссылками навигации создай кнопку "выйти", достань isAuth и setIsAuth из контекста, повесь на кнопку onClick в котором будет меняться состояние isAuth на false
+
+
+Молодец ты реализовал авторизацию, но есть ньюанс когда ты перезаходиш на страницу то твой статус авторизованного пользователя теряеться и по хорошему лучше реализуй хранение акта авторизации пользователя на его компьютере в компоненте App.js
+
+В компоненте <App> создай useEffect с пустым массивом зависимостей, в нем реализуй условие в котором ты получешь из localStorage данные с ключём auth если это значение в localStorage есть, то условие будет соответственно true и тогда измени состояние isAuth на значение true, блок else можно не писать потому что isAuth по умолчанию равно false
+
+-------------------CODE-------------------  
+//App.js
+
+import AppRouter from './components/UI components/AppRouter/AppRouter';
+import Navbar from './components/UI components/Navbar/Navbar';
+import './styles/index.css';
+import { AuthContext } from './context/index';
+import { useEffect, useState } from 'react';
+
+export default function App() {
+  const [isAuth, setIsAuth] = useState(false);
+
+  useEffect(() => {
+    if (localStorage.getItem('auth')) {
+      setIsAuth(true);
+    }
+  }, []);
+
+  return (
+    <div className="App">
+      <AuthContext.Provider value={{ isAuth, setIsAuth }}>
+        <Navbar />
+        <AppRouter />
+      </AuthContext.Provider>
+    </div>
+  );
+}
+------------------/CODE-------------------  
+
+
+
+Теперь в момент авторизации, а именно срабатывания функции login помещать в localStorage по ключу 'auth' сохранять в него строку true по скольку в него можно сохранять только строки
+
+    localStorage.setItem('auth', 'true');
+
+B соответственно когда пользователь выходит эту запись следует удалять.
+В компоненте <Navbar> создай функцию logout в ней первым делом измени состояние isAuth на false и собственно удали по ключу 'auth' запись из localStorage и не забуть повесить эту функцию на кнопку 'Выйти'
+
+-------------------CODE-------------------  
+//Navbar.jsx
+
+import { useContext } from 'react';
+import { AuthContext } from '../../../context';
+import Button from '../Button/Button';
+import CustomNavLink from '../CustomNavLink/CustomNavLink';
+
+export default function Navbar() {
+  const { isAuth, setIsAuth } = useContext(AuthContext);
+
+  function logout() {
+    setIsAuth(false);
+    localStorage.removeItem('auth');
+  }
+  
+  return (
+    <div className="navbar">
+      <Button onClick={logout}>Выйти</Button>
+      <div className="navbar__links">
+        <CustomNavLink className="NavLink" to="/">
+          Home
+        </CustomNavLink>
+        <CustomNavLink className="NavLink" to="Posts">
+          Posts
+        </CustomNavLink>
+        <CustomNavLink className="NavLink" to="About">
+          About
+        </CustomNavLink>
+      </div>
+    </div>
+  );
+}
+------------------/CODE-------------------  
+
+У тебя есть возможность устранить один баг: когда пользователь перезагружает страницу его перекидывает на страницу Home 
+
+Это происходит потому что состояние isAuth по умолчанию равно false и поэтому сначала отрабатывает map с публичными роутами, далее пользователь авторизуется тем самым изменяя состояние isAuth на true и уже пользователю предостовляються приватные роуты как раз из-за этого скачка и происходит этот баг
+
+Ты можешь пофиксить этот баг следующим образом:
+Лучшим способом будет создать состояние с индикацией о том закончился запрос или нет, поскольку получение информации о том зарегистрирован ли пользователь сопровождаеться запросом на сервер, что занимает какое-то время
+
+В компоненте <App> создай состояние isLoading, да опять его и по умолчанию сделай его true, далее там же в useEffect после условия измени состояние isLoading на false и передай isLoading в контекст
+
+-------------------CODE-------------------  
+//App.js
+
+import AppRouter from './components/UI components/AppRouter/AppRouter';
+import Navbar from './components/UI components/Navbar/Navbar';
+import './styles/index.css';
+import { AuthContext } from './context/index';
+import { useEffect, useState } from 'react';
+
+export default function App() {
+  const [isAuth, setIsAuth] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (localStorage.getItem('auth')) {
+      setIsAuth(true);
+    }
+    setIsLoading(false)
+  }, []);
+
+  return (
+    <div className="App">
+      <AuthContext.Provider value={{ isAuth, setIsAuth, isLoading }}>
+        <Navbar />
+        <AppRouter />
+      </AuthContext.Provider>
+    </div>
+  );
+}
+------------------/CODE-------------------  
+
+Теперь в файле <AppRouter> извлеки из контекста isLoading и пропиши ниже условие: если isLoading true то условие возвращает JSX конкретнее компонент <Loader>
+
+-------------------CODE-------------------  
+//AppRouter.jsx
+
+import { Route, Routes } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { privateRoutes, publicRoutes } from '../../../router';
+import { AuthContext } from '../../../context';
+import Loader from '../Loader/Loader';
+
+export default function AppRouter() {
+  const { isAuth, isLoading } = useContext(AuthContext);
+
+  if (isLoading) {
+    return <Loader />
+  }
+  return (
+    <div>
+      {isAuth ? (
+        <Routes>
+          {privateRoutes.map((route) => (
+            <Route path={route.path} element={route.element} key={route.path} />
+          ))}
+        </Routes>
+      ) : (
+        <Routes>
+          {publicRoutes.map((route) => (
+            <Route path={route.path} element={route.element} key={route.path} />
+          ))}
+        </Routes>
+      )}
+    </div>
+  );
+}
+------------------/CODE-------------------  
+
+
+Настало время сделать это!
+Реализовать бесконечную ленту
+
+Для начала в компоненте <PostsPage>, в кострукции isPostsLoading замени тернальный оператор ?: на && и вынеси компонент <PostList> из этой кострукции, и поместе его чуть выше её, а компонент <Pagination> вместе с его обёрткой вынести чуть ниже
+
+Также когда ты отправляешь запрос на сервер и получаешь те 10 постов ты помещаешь только их в состояние Posts в случае же с бесконечной лентой их следует добавлять в конец страницы 
+
+Поэтому там же в компоненте <PostsPage> в теле хука useFetching помести в состояние Posts массив в нем пропиши ...posts и ...response.data тем самы разворачивая сначала все посты, а потом новую порцию данных
+
+-------------------CODE-------------------  
+//PostPage.jsx
+
+import { useState, useEffect } from 'react';
+import usePosts from '../../hooks/usePosts';
+import useFetching from '../../hooks/useFetching';
+import PostService from '../../API/PostService';
+import { getPageCount } from '../../utils/pages';
+import Button from '../../components/UI components/Button/Button';
+import Modal from '../../components/UI components/Modal/Modal';
+import Pagination from '../../components/UI components/Pagination/Pagination';
+import Loader from '../../components/UI components/Loader/Loader';
+import PostForm from '../../components/PostForm/PostForm';
+import PostFilter from '../../components/PostFilter/PostFilter';
+import PostList from '../../components/PostList/PostList';
+import s from './PostsPage.module.css';
+
+export default function PostsPage() {
+  const [posts, setPosts] = useState([]);
+
+  const [filter, setFilter] = useState({ sort: '', quary: '' });
+
+  const [modal, setModal] = useState(false);
+
+  const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.quary);
+
+  const [totalPages, setTotalPages] = useState(0); // 10
+
+  const [limit] = useState(10);
+
+  const [page, setPage] = useState(1);
+
+  const [fetchPosts, isPostsLoading, postError] = useFetching(
+    async (limit, page) => {
+      const response = await PostService.getAll(limit, page);
+      const totalCount = response.headers['x-total-count'];
+      setTotalPages(getPageCount(totalCount, limit));
+      setPosts(response.data);
+    }
+  );
+
+  function createPost(newPost) {
+    setPosts([...posts, newPost]);
+    setModal(false);
+  }
+
+  function removePost(post) {
+    setPosts(posts.filter((posts) => posts.id !== post.id));
+  }
+
+  useEffect(() => {
+    fetchPosts(limit, page);
+  }, []);
+
+  function changePage(page) {
+    setPage(page);
+    fetchPosts(limit, page);
+  }
+
+  return (
+    <div className={s.PostsPage}>
+      <Modal visibility={modal} setVisibility={setModal}>
+        <PostForm create={createPost} />
+      </Modal>
+
+      <PostFilter filter={filter} setFilter={setFilter} />
+
+      <div className={s.ButtonCreatePost}>
+        <Button onClick={() => setModal(true)}>Create post</Button>
+      </div>
+
+      {postError && <h2>Error: {postError}</h2>}
+
+      <PostList
+        remove={removePost}
+        posts={sortedAndSearchedPosts}
+        title={'Post list'}
+      />
+
+      {isPostsLoading && (
+        <div
+          style={{ display: 'flex', justifyContent: 'center', marginTop: 50 }}
+        >
+          <Loader />
+        </div>
+      )}
+
+      <div className={s.Pagination}>
+        <Pagination
+          totalPages={totalPages}
+          page={page}
+          changePage={changePage}
+        />
+      </div>
+    </div>
+  );
+}
+------------------/CODE-------------------  
+
+На данный момент когда пользователь меняет сраницу т.е. когда действует функция changePage, то ты используешь функцию fetchPosts для получения тех десяти постов, но это избыточно, ты можешь это достаточно просто оптимизировать:
+
+Помести в массив зависимостей useEffect состояние page, которое содержит кол-во постов на странице
+
+Убери функцию fetchPosts из функции changePage 
+
+Молодец ты это сделал!
+
+
+Настало время использовать обьзервер:
+
+В компоненте <PostsPage> создай еще один useEffect с пустым массивом зависимостей 
+
+Создай константу lastElement и присвой ей вызов хука useRef
+
+Под компонентом <PostList> создай блок div передай в него пропс ref={lastElement} чтобы получить к нему доступ 
+Отлично, теперь в поле current находиться этот блок div и теперь с ним можно что-то сделать когда он в зоне видмости
+
+В новом useEffect с пустым масивом зависимостей создай переменую callback передай в него параметрами entries, observer.
+В нем же чуть ниже создай переменную observer и присвой ей new InterSectionObserver(callback)
+
+Для того чтобы получить доступ к этой переменной observer создай еще один referense
+Также ты сможешь сохрнять данные в нём и не терять при следующем рендере
+Создай констату observer и присвой ей вызов хука useRef 
+
+Теперь в useEffect c пустым массивом зависимостей помести новый InterSeptionObserver в поле current referens-а который ты поместил в константу observer
+
+Укажи за каким элементом observer будет наблюдать 
+В useEffect с пустым массивом зависимостей чуть ниже обратись к полю current referens-а observer и вызови у него метод observe, и туда передай dom элемент в данном случае это lastEllement.current
+
+Молодец! Ты сделал div, который ты прикрепил к последнему отображаемому посту, наблюдаемым.
+Отныне когда этот блок будет поподать в зону видимости будет вызываться переменная callback и исполняться код, который ты поместишь в её тело.
+
+Но пока есть баг код в функции callback исполняеться не только во время попадания блока div в область видимости, но и в момент выхода из неё.
+
+Ты можешь это пофиксить, использовав entries это массив набдаемых объектов, а у каждого такого объекта есть свойства, одно из них isIntersecting это boolean флаг отвечающий за то находиться ли наблюдаемый элемент в зоне видимости 
+Соответственно ты можешь сделать условие основываясь на значении этого свойства
+
+В переменной callback создай условие, в котором получи по нулевому индексу наблюдаемый элемент, и обратись к его полю isIntersecting если оно true, то код исполняеться в данном случае код вызова новой порции постов, который тебе еще предстоит реализовать
+
+
+Почему-то Тимур решил не делать запрос серверу на получение новой порции постов, а просто увеличивать состояние page на единицу таким образом как пользователь как бы переходит наследующую страницу когда долистывает до наблюдаемого блока, но он хитёр и ту перестановку, а также изменение состояния posts в <PostsPage> сделал именно для того чтобы при переходе на страницу прежние посты не удалялись и к ним добавлялись новые посты 
+Пока сделай как он, а именно увеличь состояние page на единицу
+
+Но в коммерческом проекте лучше просто делать запрос на сервер а от этой пагинации лучше избавиться
+
+
+И так ты пролистал до наблюдаемого блока, а номер текущей страницы все время 1.
+Этот баг возник потому что callback отработал 1 раз и объзёрвер создался один раз, и этот callback замкнул в себе еденицу.
+
+Ты можешь это пофиксить следующим образом:
+
+Добавь в массив зависимостей этого useEffect isPostsLoading таким образом при новой загрузку создавая новый объзёрвер, но если создавать новые объзёрверы и не удалять старые, то это будет криво работать.
+Поэтому добавь условие перед созданием константы callback: если isPostsLoading равен true то делаем return так ты движок даже не дойдет до создания нового объзёрвера 
+Ниже создай еще одну проверку: если объзёрвер уже создан т.е. observer.current равен true то тогда ты отключаешь все наблюдения объзёрвера вызвав у него метод disconect
+Так ты будешь создовать новый объзёрвер с новым значением page и удалять старый 
+Также в функции callback в условии добавь новую проверку код чтобы испоьнялся также если номер текущей страницы будет меньше общего количества страниц т.е. page < totalPages
+
+-------------------CODE-------------------  
+//PostsPage.jsx
+import { useState, useEffect, useRef } from 'react';
+import usePosts from '../../hooks/usePosts';
+import useFetching from '../../hooks/useFetching';
+import PostService from '../../API/PostService';
+import { getPageCount } from '../../utils/pages';
+import Button from '../../components/UI components/Button/Button';
+import Modal from '../../components/UI components/Modal/Modal';
+import Loader from '../../components/UI components/Loader/Loader';
+import PostForm from '../../components/PostForm/PostForm';
+import PostFilter from '../../components/PostFilter/PostFilter';
+import PostList from '../../components/PostList/PostList';
+import s from './PostsPage.module.css';
+
+export default function PostsPage() {
+  const [posts, setPosts] = useState([]);
+
+  const [filter, setFilter] = useState({ sort: '', quary: '' });
+
+  const [modal, setModal] = useState(false);
+
+  const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.quary);
+
+  const [totalPages, setTotalPages] = useState(0); // 10
+
+  const [limit] = useState(10);
+
+  const [page, setPage] = useState(1);
+
+  const lastElement = useRef();
+
+  const observer = useRef();
+
+  const [fetchPosts, isPostsLoading, postError] = useFetching(
+    async (limit, page) => {
+      const response = await PostService.getAll(limit, page);
+      const totalCount = response.headers['x-total-count'];
+      setTotalPages(getPageCount(totalCount, limit));
+      setPosts([...posts, ...response.data]);
+    }
+  );
+
+  function createPost(newPost) {
+    setPosts([...posts, newPost]);
+    setModal(false);
+  }
+
+  function removePost(post) {
+    setPosts(posts.filter((posts) => posts.id !== post.id));
+  }
+
+  useEffect(() => {
+    if (isPostsLoading) return;
+    if (observer.current) observer.current.disconnect();
+    let callback = function (entries, observer) {
+      if (entries[0].isIntersecting && page < totalPages) {
+        setPage(page + 1);
+      }
+    };
+
+    observer.current = new IntersectionObserver(callback);
+    observer.current.observe(lastElement.current);
+  }, [isPostsLoading]);
+
+  useEffect(() => {
+    fetchPosts(limit, page);
+  }, [page]);
+
+  function changePage(page) {
+    setPage(page);
+  }
+
+  return (
+    <div className={s.PostsPage}>
+      <Modal visibility={modal} setVisibility={setModal}>
+        <PostForm create={createPost} />
+      </Modal>
+
+      <PostFilter filter={filter} setFilter={setFilter} />
+
+      <div className={s.ButtonCreatePost}>
+        <Button onClick={() => setModal(true)}>Create post</Button>
+      </div>
+
+      {postError && <h2>Error: {postError}</h2>}
+
+      <PostList
+        remove={removePost}
+        posts={sortedAndSearchedPosts}
+        title={'Post list'}
+      />
+
+      <div ref={lastElement} />
+
+      {isPostsLoading && (
+        <div
+          style={{ display: 'flex', justifyContent: 'center', marginTop: 50 }}
+        >
+          <Loader />
+        </div>
+      )}
+    </div>
+  );
+}
+------------------/CODE-------------------  
+
+
+Умница моя! Наконец-то сделал бесконечную ленту, а теперь, по традиции, пора сделать ДЕ ДЕ ДЕ ДЕ ДЕКОМПОЗИЦИЮ)!
+
+В папку hooks создай новый хук useObserver.
+
+Из этого файла экспартируй константу useObserver сделай её стрелочной функцией.
+Она будет будет принимать:
+ref того элемента за которым ты хочешь установить слежку,
+callback, исполняемый когда наблюдаемый объект будет попадать в область видимости пользователя
+bolean флаг isLoading,
+bolean флаг canLoad - ограничитель вызова callback-а вместо условия page < totalPages.
+
+Перемести useEffect с логикой объзёрвера из <PostsPage> в этот хук
+
+Замени page < totalPages на canLoad
+
+Замени имя переменной callback на cb, чтобы предотвратить конфликт имён.
+
+Внутри переменной cb в условии вызови принимаемый пропсами callback 
+
+В методе observe замени параметр lastElement.current на ref.current
+
+Создай выше useEffect константу observer и присвой ей вызов хука useRef
+
+Переименуй isPostsLoading на isLoading;
+
+Замени callback на cb в параметрах InterSectionObserver
+-------------------CODE-------------------  
+//useObserver.jsx
+
+import { useEffect, useRef } from 'react';
+
+export const useObserver = ( ref, canLoad, isLoading, callback ) => {
+  const observer = useRef();
+
+  useEffect(() => {
+    if (isLoading) return;
+    if (observer.current) observer.current.disconnect();
+    let cb = function (entries, observer) {
+      if (entries[0].isIntersecting && canLoad) {
+        callback();
+      }
+    };
+
+    observer.current = new IntersectionObserver(cb);
+    observer.current.observe(ref.current);
+  }, [isLoading]);
+};
+------------------/CODE-------------------  
+
+Пора его использовать 
+
+В <PostsPage> удали константу observer
+
+На месте старого useEffect вызови хук useObserver передай в него lastElement, path < totalPages, isPostsLoading, () => {setPage(page + 1)}
+
+
+
+ПОСЛЕДНИЙ ФУНЦИОНАЛ!
+
+В <PostsPage> под кнопкой CreatePost создай <Select> в нём 
+
+В value помести конмтанту limit 
+
+создай onChange в него передай callback в его параметрах получи значение константы limit, а в его теле измени состояние limit на это значение
+
+Создай defaultValue в нем передай надпись 'Elements on page
+
+Создай обьект option в него передай массив обьектов c тремя обьектами:
+{value: 5, name: '5'}
+{value: 10, name: '10'}
+{value: 25, name: '25'}
+{value: '-1', name: 'Показат всё'} - -1 выдаст все посты независмо от страницы
+
+Добавь limit в массив зависимостей useEffect
+
+
